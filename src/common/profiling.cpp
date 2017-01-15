@@ -54,7 +54,6 @@ long long get_nsec_cpu_time()
     ts.tv_sec = mts.tv_sec;
     ts.tv_nsec = mts.tv_nsec;
     #else
-    ::timespec ts;
     if ( ::clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts) )
         throw ::std::runtime_error("clock_gettime(CLOCK_PROCESS_CPUTIME_ID) failed");
         // If we expected this to work, don't silently ignore failures, because that would hide the problem and incur an unnecessarily system-call overhead. So if we ever observe this exception, we should probably add a suitable #ifdef .
