@@ -765,7 +765,8 @@ bool r1cs_ppzksnark_affine_verifier_weak_IC(const r1cs_ppzksnark_verification_ke
 
 template<typename ppT>
 r1cs_ppzksnark_processed_batch_verification_key<ppT> r1cs_ppzksnark_batch_verifier_process_vk(const r1cs_ppzksnark_verification_key<ppT> &vk)
-{
+{   
+    //computing the second input for the second ML factor
     enter_block("Call to r1cs_ppzksnark_batch_verifier_process_vk");
     r1cs_ppzksnark_processed_batch_verification_key<ppT> pvk;
     pvk.pair1 = ppT::precompute_G2(vk.alphaA_g2);
@@ -782,10 +783,10 @@ r1cs_ppzksnark_processed_batch_verification_key<ppT> r1cs_ppzksnark_batch_verifi
     pvk.pair4 = ppT::precompute_G2(vk.gamma_g2);
     
     //computing the second input for the fifth ML factor
-    //−r 4(vk x + πA + πC) and vk^2_betagamma
+    //−r4(vk x + πA + πC) and vk^2_betagamma
     pvk.pair5 = ppT::precompute_G2(vk.gamma_beta_g2);
 
-    //computing the second input for the six ML factor
+    //computing the second input for the sixth ML factor
     //r5Pi_H and -vk_Z
     pvk.pair6 = ppT::precompute_G2(-vk.rC_Z_g2);
     
@@ -830,8 +831,8 @@ void r1cs_ppzksnark_batcher(const r1cs_ppzksnark_verification_key<ppT> &vk,
     //computing left input for the fourth ML factor
     // r4Pi_K and vk_gamma
     acc.pair4 = acc.pair4 + r_4*proof.g_K;
-        //computing left input for the fifth ML factor
-    //−r 4(vk x + πA + πC) and vk^2_betagamma
+    //computing left input for the fifth ML factor
+    //−r4(vk x + πA + πC) and vk^2_betagamma
     acc.pair5 = acc.pair5 + -r_4*(accu + proof.g_A.g + proof.g_C.g);
     
     //computing left input for the six ML factor
@@ -933,37 +934,20 @@ bool r1cs_ppzksnark_batch_verifier(const r1cs_ppzksnark_processed_batch_verifica
                                             const r1cs_ppzksnark_primary_input<ppT> &primary_input,
                                             const r1cs_ppzksnark_proof<ppT> &proof)
 {
-     enter_block("Call to r1cs_ppzksnark_batch_verifier");
+    enter_block("Call to r1cs_ppzksnark_batch_verifier");
 
-    enter_block("Preparing 7 ML factors");
+    //computing the Miller Loop result of first six pairs (the seventh is already stored in acc).
+    enter_block("Preparing first 6 ML factors");
 
-    //computing left input for the first ML factor
-    // r3Pi_a and vk_A
     auto pair_1 = std::make_pair(ppT::precompute_G1(acc.pair1),pvk.pair1);
-    
-    //computing left input for the second ML factor
-    // r3Pi'_a + R2Pi'_B+r3Pi'_C + r5Pi_C and -g2
-     auto pair_2 = std::make_pair(ppT::precompute_G1(acc.pair2),pvk.pair2);
-    //computing left input for the third ML factor
-    // r3Pi_c and vk_C
+    auto pair_2 = std::make_pair(ppT::precompute_G1(acc.pair2),pvk.pair2);
     auto pair_3 = std::make_pair(ppT::precompute_G1(acc.pair3),pvk.pair3);
-
-    //computing left input for the fourth ML factor
-    // r4Pi_K and vk_gamma
     auto pair_4 = std::make_pair(ppT::precompute_G1(acc.pair4),pvk.pair4);
-
-    //computing left input for the fifth ML factor
-    //−r 4(vk x + πA + πC) and vk^2_betagamma
     auto pair_5 = std::make_pair(ppT::precompute_G1(acc.pair5),pvk.pair5);
-
-    //computing left input for the six ML factor
-    //r5Pi_H and -vk_Z
     auto pair_6 = std::make_pair(ppT::precompute_G1(acc.pair6),pvk.pair6);
 
-    //computing left input for the seventh ML factor
-    //r_2 vk_B-r_4 vk^3_{\beta\gamma}+r_5(vk_x + \pi_A) and pi_B
-    leave_block("Preparing 7 ML factors");
-
+    leave_block("Preparing first 6 ML factors");
+    //taking product of all ML results, and then computing the final exponentiation of this product
     Fqk<ppT> ML  = ppT::multiple_miller_loop({
        pair_1,pair_2,pair_3,pair_4,pair_5,pair_6
     })*acc.pair7;
