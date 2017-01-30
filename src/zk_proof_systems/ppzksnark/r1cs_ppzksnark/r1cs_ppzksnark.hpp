@@ -473,8 +473,8 @@ bool r1cs_ppzksnark_affine_verifier_weak_IC(const r1cs_ppzksnark_verification_ke
 
 /****Batch and probabilistic verification 
  * using randomness and the bilinearity of the pairing operation, the Pinocchio verifier can be made more efficient
- * with the price of making the verification procedure probabilisitc, introducing a negligible chance of accepting a bad proofs
- * in a similar way verifying a batch of proofs can be bundled into verifying a single pairing equation using randomness
+ * with the price of making the verification procedure probabilistic, introducing a negligible chance of accepting a bad proof.
+ * In a similar way verifying a batch of proofs can be bundled into verifying a single pairing equation using randomness
  * such that the verifier always accepts if all proofs in the batch are valid, and the verifier accepts with a negligible 
  * probability when one of the proofs in the batch is invalid.
  * The methods below implemement these verifiers,
