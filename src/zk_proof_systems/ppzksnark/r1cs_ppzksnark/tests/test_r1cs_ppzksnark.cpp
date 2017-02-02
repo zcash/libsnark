@@ -46,7 +46,7 @@ void test_r1cs_ppzksnark_batch_verifier(size_t num_constraints,
         
     }
 
-    const bool bit = r1cs_ppzksnark_batch_verifier<ppT>(pvk, acc,example.primary_input,proof);
+    const bool bit = r1cs_ppzksnark_batch_verifier<ppT>(pvk, acc);
     assert(bit);
     leave_block("In test_r1cs_ppzksnark_batch_verifier after generating example and proof");
     
