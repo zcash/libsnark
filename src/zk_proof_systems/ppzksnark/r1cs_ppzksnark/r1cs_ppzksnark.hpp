@@ -551,9 +551,7 @@ bool r1cs_ppzksnark_probabilistic_verifier(const r1cs_ppzksnark_verification_key
                                             const r1cs_ppzksnark_proof<ppT> &proof);
 template<typename ppT>
 bool r1cs_ppzksnark_batch_verifier(const r1cs_ppzksnark_processed_batch_verification_key <ppT> &pvk,
-                                            const batch_verification_accumulator <ppT> &acc,
-                                            const r1cs_ppzksnark_primary_input<ppT> &primary_input,
-                                            const r1cs_ppzksnark_proof<ppT> &proof);
+                                            const batch_verification_accumulator <ppT> &acc);
 template<typename ppT>
 r1cs_ppzksnark_processed_batch_verification_key<ppT> r1cs_ppzksnark_batch_verifier_process_vk(
     const r1cs_ppzksnark_verification_key<ppT> &vk,
