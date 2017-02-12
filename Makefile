@@ -6,6 +6,13 @@
 #* @copyright  MIT license (see LICENSE file)
 #*******************************************************************************/
 
+# Determine building operating system
+ifeq ($(OS),Windows_NT)
+    uname_S := Windows
+else
+    uname_S := $(shell uname -s)
+endif
+
 # To override these, use "make OPTFLAGS=..." etc.
 CURVE = BN128
 OPTFLAGS = -O2 -march=native -mtune=native
@@ -196,6 +203,14 @@ $(LIBGTEST_A): $(GTESTDIR)/src/gtest-all.cc $(DEPINST_EXISTS)
 
 # libsnark.a will contains all of our relevant object files, and we also mash in the .a files of relevant dependencies built by ./prepare-depends.sh
 $(LIBSNARK_A): $(LIB_OBJS) $(AR_LIBS)
+ifeq ($(uname_S), Darwin)
+	( \
+	  echo " $(LIBSNARK_A)"; \
+	  echo " $(LIB_OBJS)"; \
+	  if [ -n "$(AR_LIBS)" ]; then for AR_LIB in $(AR_LIBS); do echo addlib $$AR_LIB; done; fi; \
+	) | xargs  $(AR) -r
+	 $(AR) s $(LIBSNARK_A)
+else
 	( \
 	  echo "create $(LIBSNARK_A)"; \
 	  echo "addmod $(LIB_OBJS)"; \
@@ -204,6 +219,7 @@ $(LIBSNARK_A): $(LIB_OBJS) $(AR_LIBS)
 	  echo "end"; \
 	) | $(AR) -M
 	$(AR) s $(LIBSNARK_A)
+endif
 
 libsnark.so: $(LIBSNARK_A) $(DEPINST_EXISTS)
 	$(CXX) -o $@   --shared -Wl,--whole-archive $(LIBSNARK_A) $(CXXFLAGS) $(LDFLAGS) -Wl,--no-whole-archive $(LDLIBS)
