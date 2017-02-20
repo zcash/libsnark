@@ -76,7 +76,7 @@ T reserialize(const T &obj)
 template<typename T>
 std::ostream& operator<<(std::ostream& out, const std::vector<T> &v)
 {
-    static_assert(!std::is_same<T, bool>::value, "this does not work for std::vector<bool>");
+    static_assert(!(std::is_same<T, bool>::value), "this does not work for std::vector<bool>");
     out << v.size() << "\n";
     for (const T& t : v)
     {
@@ -89,7 +89,7 @@ std::ostream& operator<<(std::ostream& out, const std::vector<T> &v)
 template<typename T>
 std::istream& operator>>(std::istream& in, std::vector<T> &v)
 {
-    static_assert(!std::is_same<T, bool>::value, "this does not work for std::vector<bool>");
+    static_assert(!(std::is_same<T, bool>::value), "this does not work for std::vector<bool>");
     size_t size;
     in >> size;
     consume_newline(in);
