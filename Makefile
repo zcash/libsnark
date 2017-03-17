@@ -53,8 +53,7 @@ LIB_SRCS = \
 	src/algebra/curves/alt_bn128/alt_bn128_pp.cpp \
 	src/common/profiling.cpp \
 	src/common/utils.cpp \
-	src/gadgetlib1/constraint_profiling.cpp \
-
+	src/gadgetlib1/constraint_profiling.cpp	
 ifeq ($(CURVE),BN128)
 	LIB_SRCS += \
 	        src/algebra/curves/bn128/bn128_g1.cpp \
@@ -70,7 +69,6 @@ endif
 
 # FIXME: most of these are broken due to removed code.
 DISABLED_EXECUTABLES = \
-	src/algebra/curves/tests/test_bilinearity \
 	src/algebra/curves/tests/test_groups \
 	src/algebra/fields/tests/test_fields \
 	src/common/routing_algorithms/profiling/profile_routing_algorithms \
@@ -94,7 +92,6 @@ DISABLED_EXECUTABLES = \
 	src/zk_proof_systems/ppzksnark/r1cs_gg_ppzksnark/profiling/profile_r1cs_gg_ppzksnark \
 	src/zk_proof_systems/ppzksnark/r1cs_gg_ppzksnark/tests/test_r1cs_gg_ppzksnark \
 	src/zk_proof_systems/ppzksnark/r1cs_ppzksnark/profiling/profile_r1cs_ppzksnark \
-	src/zk_proof_systems/ppzksnark/r1cs_ppzksnark/tests/test_r1cs_ppzksnark \
 	src/zk_proof_systems/ppzksnark/ram_ppzksnark/examples/demo_ram_ppzksnark \
 	src/zk_proof_systems/ppzksnark/ram_ppzksnark/examples/demo_ram_ppzksnark_generator \
 	src/zk_proof_systems/ppzksnark/ram_ppzksnark/examples/demo_ram_ppzksnark_prover \
@@ -109,14 +106,12 @@ DISABLED_EXECUTABLES = \
 	src/zk_proof_systems/zksnark/ram_zksnark/tests/test_ram_zksnark
 
 EXECUTABLES = \
+	src/algebra/curves/tests/test_bilinearity \
+	src/zk_proof_systems/ppzksnark/r1cs_ppzksnark/tests/test_r1cs_ppzksnark \
 	src/algebra/fields/tests/test_bigint
 
-EXECUTABLES_WITH_GTEST = \
-	src/gadgetlib2/examples/tutorial \
-	src/gadgetlib2/tests/gadgetlib2_test
 
-EXECUTABLES_WITH_SUPERCOP = \
-	src/zk_proof_systems/ppzkadsnark/r1cs_ppzkadsnark/examples/demo_r1cs_ppzkadsnark
+
 
 DOCS = README.html
 
@@ -208,13 +203,6 @@ $(LIBSNARK_A): $(LIB_OBJS) $(AR_LIBS)
 libsnark.so: $(LIBSNARK_A) $(DEPINST_EXISTS)
 	$(CXX) -o $@   --shared -Wl,--whole-archive $(LIBSNARK_A) $(CXXFLAGS) $(LDFLAGS) -Wl,--no-whole-archive $(LDLIBS)
 
-src/gadgetlib2/tests/gadgetlib2_test: \
-	src/gadgetlib2/tests/adapters_UTEST.cpp \
-	src/gadgetlib2/tests/constraint_UTEST.cpp \
-	src/gadgetlib2/tests/gadget_UTEST.cpp \
-	src/gadgetlib2/tests/integration_UTEST.cpp \
-	src/gadgetlib2/tests/protoboard_UTEST.cpp \
-	src/gadgetlib2/tests/variable_UTEST.cpp
 
 $(EXECUTABLES): %: %.o $(LIBSNARK_A) $(DEPINST_EXISTS)
 	$(CXX) -o $@   $@.o $(LIBSNARK_A) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
