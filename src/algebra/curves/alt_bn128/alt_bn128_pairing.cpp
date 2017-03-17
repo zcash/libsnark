@@ -489,10 +489,12 @@ alt_bn128_Fq12 alt_bn128_ate_multiple_miller_loop(
 
 
 
-alt_bn128_Fq12 alt_bn128_ate_double_miller_loop(const alt_bn128_ate_G1_precomp &prec_P1,
-                                     const alt_bn128_ate_G2_precomp &prec_Q1,
-                                     const alt_bn128_ate_G1_precomp &prec_P2,
-                                     const alt_bn128_ate_G2_precomp &prec_Q2)
+alt_bn128_Fq12 alt_bn128_ate_double_miller_loop(
+                                    const alt_bn128_ate_G1_precomp &prec_P1,
+                                    const alt_bn128_ate_G2_precomp &prec_Q1,
+                                    const alt_bn128_ate_G1_precomp &prec_P2,
+                                    const alt_bn128_ate_G2_precomp &prec_Q2
+                                    )
 {
     enter_block("Call to alt_bn128_ate_double_miller_loop");
 

@@ -761,32 +761,30 @@ bool r1cs_ppzksnark_affine_verifier_weak_IC(const r1cs_ppzksnark_verification_ke
 
 
 
-/*****Ariel stuff from here ****/
-
 template<typename ppT>
 r1cs_ppzksnark_processed_batch_verification_key<ppT> r1cs_ppzksnark_batch_verifier_process_vk(const r1cs_ppzksnark_verification_key<ppT> &vk)
 {   
-    //computing the second input for the second ML factor
+    //computing the right input for the first ML factor
     enter_block("Call to r1cs_ppzksnark_batch_verifier_process_vk");
     r1cs_ppzksnark_processed_batch_verification_key<ppT> pvk;
     pvk.pair1 = ppT::precompute_G2(vk.alphaA_g2);
     
-    //computing the second input for the second ML factor
+    //computing the right input for the second ML factor
     // r1Pi'_a + R2Pi'_B+r3Pi'_C + r5Pi_C and -g2
     pvk.pair2 = ppT::precompute_G2(-G2<ppT>::one());
-    //computing the second input for the third ML factor
+    //computing the right input for the third ML factor
     // r3Pi_c and vk_C
     pvk.pair3 = ppT::precompute_G2(vk.alphaC_g2) ;
     
-    //computing the second input for the fourth ML factor
+    //computing the right input for the fourth ML factor
     // r4Pi_K and vk_gamma
     pvk.pair4 = ppT::precompute_G2(vk.gamma_g2);
     
-    //computing the second input for the fifth ML factor
+    //computing the right input for the fifth ML factor
     //−r4(vk x + πA + πC) and vk^2_betagamma
     pvk.pair5 = ppT::precompute_G2(vk.gamma_beta_g2);
 
-    //computing the second input for the sixth ML factor
+    //computing the right input for the sixth ML factor
     //r5Pi_H and -vk_Z
     pvk.pair6 = ppT::precompute_G2(-vk.rC_Z_g2);
     
@@ -835,7 +833,7 @@ void r1cs_ppzksnark_batcher(const r1cs_ppzksnark_verification_key<ppT> &vk,
     //−r4(vk x + πA + πC) and vk^2_betagamma
     acc.pair5 = acc.pair5 + -r_4*(accu + proof.g_A.g + proof.g_C.g);
     
-    //computing left input for the six ML factor
+    //computing left input for the sixth ML factor
     //r5Pi_H and -vk_Z
     acc.pair6 = acc.pair6 + r_5*proof.g_H;
     

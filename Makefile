@@ -53,8 +53,7 @@ LIB_SRCS = \
 	src/algebra/curves/alt_bn128/alt_bn128_pp.cpp \
 	src/common/profiling.cpp \
 	src/common/utils.cpp \
-	src/gadgetlib1/constraint_profiling.cpp  
-	
+	src/gadgetlib1/constraint_profiling.cpp	
 ifeq ($(CURVE),BN128)
 	LIB_SRCS += \
 	        src/algebra/curves/bn128/bn128_g1.cpp \
@@ -108,7 +107,8 @@ DISABLED_EXECUTABLES = \
 
 EXECUTABLES = \
 	src/algebra/curves/tests/test_bilinearity \
-	src/zk_proof_systems/ppzksnark/r1cs_ppzksnark/tests/test_r1cs_ppzksnark
+	src/zk_proof_systems/ppzksnark/r1cs_ppzksnark/tests/test_r1cs_ppzksnark \
+	src/algebra/fields/tests/test_bigint
 
 
 

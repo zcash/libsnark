@@ -7,7 +7,7 @@
 #include "common/profiling.hpp"
 //#include "algebra/curves/edwards/edwards_pp.hpp"
 #ifdef CURVE_BN128
-//#include "algebra/curves/bn128/bn128_pp.hpp"
+    #include "algebra/curves/bn128/bn128_pp.hpp"
 #endif
 #include "algebra/curves/alt_bn128/alt_bn128_pp.hpp"
 //#include "algebra/curves/mnt/mnt4/mnt4_pp.hpp"
@@ -166,9 +166,9 @@ int main(void)
     double_miller_loop_test<alt_bn128_pp>();
     multiple_miller_loop_test<alt_bn128_pp>();
 
-// #ifdef CURVE_BN128       // BN128 has fancy dependencies so it may be disabled
-//     bn128_pp::init_public_params();
-//     pairing_test<bn128_pp>();
-//     double_miller_loop_test<bn128_pp>();
-// #endif
+#ifdef CURVE_BN128       // BN128 has fancy dependencies so it may be disabled
+    bn128_pp::init_public_params();
+    pairing_test<bn128_pp>();
+    double_miller_loop_test<bn128_pp>();
+#endif
 }

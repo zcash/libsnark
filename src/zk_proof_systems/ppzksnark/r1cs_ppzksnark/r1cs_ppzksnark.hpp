@@ -478,16 +478,15 @@ bool r1cs_ppzksnark_affine_verifier_weak_IC(const r1cs_ppzksnark_verification_ke
  * such that the verifier always accepts if all proofs in the batch are valid, and the verifier accepts with a negligible 
  * probability when one of the proofs in the batch is invalid.
  * The methods below implemement these verifiers,
- * and the logic behind them are described in  https://github.com/arielgabizon/libsnark/blob/multimiller/src/zk_proof_systems/batchverification.pdf
+ * and the logic behind them are described in  src/zk_proof_systems/batchverification.pdf
  *
  */
 /**
- * The purpose of this class is to enable one time precomputation of elements that are 
+ * The purpose of this class is to enable one-time precomputation of elements that are 
  * functions of the verification key
  * and are used in each invocation of r1cs_ppzksnark_probabilistic_verifier
  * and also r1cs_ppzksnark_batcher
- * these elements are the G2 arguments of the pairings in
- * https://github.com/arielgabizon/libsnark/blob/multimiller/src/zk_proof_systems/batchverification.pdf
+ * these elements are the G2 arguments of the pairings in src/zk_proof_systems/batchverification.pdf
  */
 
 //Better explanation of names, have this inherit from processed_verification_key
@@ -510,7 +509,7 @@ public:
 };
 
 //a data structure to store intermediate G1 argument results from various proofs before the final batch verification
-// (except for the seventh member where we store the result of a product of Miller Loops. See Section 2 of  https://github.com/arielgabizon/libsnark/blob/multimiller/src/zk_proof_systems/batchverification.pdf.
+// (except for the seventh member where we store the result of a product of Miller Loops. See Section 2 of  src/zk_proof_systems/batchverification.pdf.
 template<typename ppT>
 class batch_verification_accumulator{
 public:
@@ -525,8 +524,14 @@ public:
     //a product of Miller Loops rather than just the first argument
     Fqk<ppT> pair7;
 
-batch_verification_accumulator():pair1(G1<ppT>::zero()),pair2(G1<ppT>::zero()),pair3(G1<ppT>::zero()),pair4(G1<ppT>::zero()),
-pair5(G1<ppT>::zero()),pair6(G1<ppT>::zero()),pair7(Fqk<ppT>::one())
+batch_verification_accumulator():
+                                pair1(G1<ppT>::zero()),
+                                pair2(G1<ppT>::zero()),
+                                pair3(G1<ppT>::zero()),
+                                pair4(G1<ppT>::zero()),
+                                pair5(G1<ppT>::zero()),
+                                pair6(G1<ppT>::zero()),
+                                pair7(Fqk<ppT>::one())
 {
 
 };

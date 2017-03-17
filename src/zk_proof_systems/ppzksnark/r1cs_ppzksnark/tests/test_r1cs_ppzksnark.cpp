@@ -19,7 +19,6 @@
 
 using namespace libsnark;
 
-//****Ariel code-testing batch verifier****///
 template<typename ppT>
 void test_r1cs_ppzksnark_batch_verifier(size_t num_constraints,
                          size_t input_size)
@@ -37,13 +36,9 @@ void test_r1cs_ppzksnark_batch_verifier(size_t num_constraints,
     r1cs_ppzksnark_processed_batch_verification_key<ppT> pvk = r1cs_ppzksnark_batch_verifier_process_vk<ppT>(keypair.vk);
     
     batch_verification_accumulator<ppT> acc;
-    //const bool test_serialization = true;
     for(auto i=0; i<10;i++)
     {
-        //r1cs_example<Fr<ppT> > example = generate_r1cs_example_with_binary_input<Fr<ppT> >(num_constraints, input_size);
         add_proof_in_batch_verifier_test<ppT>(acc,proof,keypair.vk,example.primary_input);
-        
-        
     }
 
     const bool bit = r1cs_ppzksnark_batch_verifier<ppT>(pvk, acc);
@@ -52,9 +47,6 @@ void test_r1cs_ppzksnark_batch_verifier(size_t num_constraints,
     
     leave_block("Test R1CS ppzkSNARK batch verifier");
 }
-
-
-///****End Ariel code ******//////
 
 
 template<typename ppT>
@@ -66,7 +58,7 @@ void test_r1cs_ppzksnark(size_t num_constraints,
     const bool test_serialization = false;
     r1cs_example<Fr<ppT> > example = generate_r1cs_example_with_binary_input<Fr<ppT> >(num_constraints, input_size);
     const bool bit = run_r1cs_ppzksnark<ppT>(example, test_serialization);
-    //assert(bit);
+    assert(bit);
 
     print_header("(leave) Test R1CS ppzkSNARK");
 }
@@ -76,6 +68,6 @@ int main()
     default_r1cs_ppzksnark_pp::init_public_params();
     start_profiling();
     
-    //test_r1cs_ppzksnark<default_r1cs_ppzksnark_pp>(1000, 100);
+    test_r1cs_ppzksnark<default_r1cs_ppzksnark_pp>(1000, 100);
     test_r1cs_ppzksnark_batch_verifier<default_r1cs_ppzksnark_pp>(1000,100);
 }
