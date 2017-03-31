@@ -68,6 +68,6 @@ int main()
     default_r1cs_ppzksnark_pp::init_public_params();
     start_profiling();
     
-    test_r1cs_ppzksnark<default_r1cs_ppzksnark_pp>(1000, 100);
+    //test_r1cs_ppzksnark<default_r1cs_ppzksnark_pp>(1000, 100);
     test_r1cs_ppzksnark_batch_verifier<default_r1cs_ppzksnark_pp>(1000,100);
 }
